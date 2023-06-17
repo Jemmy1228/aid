@@ -1,9 +1,9 @@
-# aid2 总览
+# aid2: 总览
 Authorize ios device 实现功能和爱思助手一样安装app，使用aid2 授权之后 ，安装的IPA文件不需要输入appid和密码，aid第二版本，可以支持windows和mac系统，目前mac系统还没有调通。
 
 # 目录
 
-- [aid2: 总览](#aid2 总览)
+- [aid2: 总览](#aid2-总览)
 - [目录](#目录)
 - [入门](#入门)
   - [快速开始: Windows](#快速开始-windows)
@@ -55,8 +55,8 @@ macOS 平台前置条件:
 ```sh
 $ git clone https://github.com/microsoft/vcpkg
 $ ./vcpkg/bootstrap-vcpkg.sh
-> ./vcpkg/vcpkg install grpc protobuf 
-> ./vcpkg/vcpkg integrate install
+$ ./vcpkg/vcpkg install grpc protobuf 
+$ ./vcpkg/vcpkg integrate install
 ```
 
 ## 安装 macOS Developer Tools
