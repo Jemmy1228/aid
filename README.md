@@ -12,6 +12,9 @@ Authorize ios device 实现功能和爱思助手一样安装app，使用aid2 授
 - [编译](#编译)
   - [下载源码](#下载源码)
   - [使用Visual Studio 2019编译](#使用visual-studio-2019编译)
+- [运行](#运行)
+  - [调试](#调试)
+  - [命令行运行](#命令行运行)
 # 入门
 
 首先，请阅读以下任一快速入门指南：
@@ -80,3 +83,19 @@ $ xcode-select --install
 
 ## 使用Visual Studio 2019编译
 使用 Visual Studio 2019 打开 aid2.sln 文件，平台选择x64,然后编译整个解决方案
+
+然后到 https://github.com/aidserv/aid/releases 下载编译后版本，解压出aid2.zip压缩包,把certificate文件夹复制到编译输出目录下面就可以。
+
+
+# 运行
+## 调试
+    examples目录下面cpp项目为启动项目，就可以进入自动调试状态。
+
+## 命令行运行
+   进入编译输出目录，x64\Debug或者x64\Release目录，
+```cmd
+> cpp
+```
+
+运行以上命令输出：设备名:iPhone 授权成功 就自动授权成功
+
