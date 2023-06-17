@@ -1,5 +1,6 @@
 # aid2: 总览
 Authorize ios device 实现功能和爱思助手一样安装app，使用aid2 授权之后 ，安装的IPA文件不需要输入appid和密码，aid第二版本，可以支持windows和mac系统，目前mac系统还没有调通。
+
 <br>
 邮箱：2277695881@qq.com      qq:2277695881
 # 目录
