@@ -43,8 +43,8 @@ windows 平台支持windows 10之后版本，itunes 安装最新版本或者说�
 ```
 
 安装itunes版本，windows 10下载连接
-* [下载 Windows 10（64 位）版 iTunes 12.10.11] (https://secure-appldnld.apple.com/itunes12/001-97787-20210421-F0E5A3C2-A2C9-11EB-A40B-A128318AD179/iTunes64Setup.exe)
-* [下载 Windows 10（32 位）版 iTunes 12.10.11] (https://secure-appldnld.apple.com/itunes12/001-97791-20210421-F0E1AA9C-A2C9-11EB-8059-A028318AD179/iTunesSetup.exe)
+* [下载 Windows 10（64 位）版 iTunes 12.10.11](https://secure-appldnld.apple.com/itunes12/001-97787-20210421-F0E5A3C2-A2C9-11EB-A40B-A128318AD179/iTunes64Setup.exe)
+* [下载 Windows 10（32 位）版 iTunes 12.10.11](https://secure-appldnld.apple.com/itunes12/001-97791-20210421-F0E1AA9C-A2C9-11EB-8059-A028318AD179/iTunesSetup.exe)
 
 ## 快速开始: Unix
 
