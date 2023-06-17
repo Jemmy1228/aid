@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="iTunesApi">
+      <UniqueIdentifier>{a214818d-07d0-4b0c-9ed0-cdc0aa448c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ProtoBuf">
+      <UniqueIdentifier>{f09fb269-3c58-4e37-a637-2ad7cd6298bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="iTunesApi\iTunesApi.h">
+      <Filter>iTunesApi</Filter>
+    </ClInclude>
+    <ClInclude Include="iTunesApi\simpleApi.h">
+      <Filter>iTunesApi</Filter>
+    </ClInclude>
+    <ClInclude Include="iTunesApi\unkonwStruct.h">
+      <Filter>iTunesApi</Filter>
+    </ClInclude>
+    <ClInclude Include="aid2.h" />
+    <ClInclude Include="iOSDevice.h" />
+    <ClInclude Include="..\ProtoBuf\GenerateRS\GenerateRS.grpc.pb.h">
+      <Filter>ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ProtoBuf\GenerateRS\GenerateRS.pb.h">
+      <Filter>ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="GenerateRS_client.h">
+      <Filter>ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="iTunesApi\helper.cpp">
+      <Filter>iTunesApi</Filter>
+    </ClCompile>
+    <ClCompile Include="iTunesApi\iTunesApi.cpp">
+      <Filter>iTunesApi</Filter>
+    </ClCompile>
+    <ClCompile Include="iTunesApi\simpleApi.cpp">
+      <Filter>iTunesApi</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="aid2.cpp" />
+    <ClCompile Include="iOSDevice.cpp" />
+    <ClCompile Include="..\ProtoBuf\GenerateRS\GenerateRS.grpc.pb.cc">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ProtoBuf\GenerateRS\GenerateRS.pb.cc">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateRS_client.cpp">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="aid2.def" />
+  </ItemGroup>
+</Project>

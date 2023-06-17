@@ -1,33 +1,50 @@
-﻿// cpp.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-#include "aid/aiddll.h"
-#include <iostream>
-//#include "aid2/service.h"
+﻿#include <iostream>
+#include "aid2/aid2.h"
+
+// 设置成自动授权 事件通知函数
+void ReadAuthorizeInfo(DeviceParameter r1)
+{
+	std::cout << "iOS设备，udid:" << r1.udid << " 设备名:" << r1.DeviceName;
+	switch (r1.ReturnFlag)
+	{	
+	case AuthorizeReturnStatus::AuthorizeDopairingLocking:
+		std::cout << "，请打开密码锁定，进入ios主界面。" << std::endl;
+		break;
+	case AuthorizeReturnStatus::AuthorizeDopairingTrust:
+		std::cout << "，请在设备端按下“信任”按钮。" << std::endl;
+		break;
+	case AuthorizeReturnStatus::AuthorizeDopairingNotTrust:
+		std::cout << "，使用者按下了“不信任”按钮。" << std::endl;
+		break;
+	default:
+		std::cout << (r1.ReturnFlag == AuthorizeReturnStatus::AuthorizeSuccess ? " 授权成功" : " 授权失败") << std::endl;
+		break;
+	}
+}
+
+//自动授权代码示例
+void autoDo()
+{
+	RegisterCallback(ReadAuthorizeInfo); //注册信任,结果通知事件回调函数
+	StartListen(true);
+	std::cout << "按回车键停止..." << std::endl;
+	std::cin.get();  // 阻止主线程退出
+	StopListen();
+}
+//下面代码是不自动授权
+void Do(char * udid)
+{
+
+		RegisterCallback(ReadAuthorizeInfo); //注册信任通知事件回调函数
+		StartListen(false);
+		auto ret = AuthorizeDevice(udid);
+		std::cout << "iOS设备，udid:" << udid << (ret ? " 授权成功" : " 授权失败") << std::endl;
+		StopListen();
+}
+
 
 int main(int argc, char* argv[], char* envp[])
 {
-	int ret;
-	if (argc != 2)
-	{
-		std::cout << "The parameter input is wrong, the usage method is as follows:\n";
-		std::cout << "     " << argv[0] << " udid\n";
-		ret = 2;
-	}
-	else
-	{
-		ret = aid(argv[1]);
-		 //ret = test(1, 1);
-	}
-	return  ret ? EXIT_SUCCESS : EXIT_FAILURE;
+	//Do(argv[1]);
+	autoDo();
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
