@@ -100,7 +100,7 @@ $ xcode-select --install
 
 运行以上命令输出：设备名:iPhone 授权成功 就自动授权成功
 
-安装app, 以下命令是安装换机助手，chatgpt,同步助手，由于自定app市场需要大量人力物力，如果需要自定义app ,请联系上面邮箱或者QQ
+安装app, 以下命令是安装换机助手，chatgpt，同步助手，由于自定app市场需要大量人力物力，如果需要安装指定的app,请联系上面邮箱或者QQ
 ```cmd
 > ideviceinstaller.exe -i h1.0.25.ipa
 > ideviceinstaller.exe -i ChatGPT 1.2023.21 1.ipa
