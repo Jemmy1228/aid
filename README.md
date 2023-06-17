@@ -9,7 +9,9 @@ Authorize ios device 实现功能和爱思助手一样安装app，使用aid2 授
   - [快速开始: Windows](#快速开始-windows)
   - [快速开始: Unix](#快速开始-unix)
   - [安装 macOS Developer Tools](#安装-macos-developer-tools)
-
+- [编译](#编译)
+  - [下载源码](#下载源码)
+  - [使用Visual Studio 2019编译](#使用visual-studio-2019编译)
 # 入门
 
 首先，请阅读以下任一快速入门指南：
@@ -41,8 +43,8 @@ windows 平台支持windows 10之后版本，itunes 安装最新版本或者说�
 ```
 
 安装itunes版本，windows 10下载连接
-* [下载 Windows 10（64 位）版 iTunes 12.10.11] [https://secure-appldnld.apple.com/itunes12/001-97787-20210421-F0E5A3C2-A2C9-11EB-A40B-A128318AD179/iTunes64Setup.exe]
-* [下载 Windows 10（32 位）版 iTunes 12.10.11] [https://secure-appldnld.apple.com/itunes12/001-97791-20210421-F0E1AA9C-A2C9-11EB-8059-A028318AD179/iTunesSetup.exe]
+* [下载 Windows 10（64 位）版 iTunes 12.10.11] (https://secure-appldnld.apple.com/itunes12/001-97787-20210421-F0E5A3C2-A2C9-11EB-A40B-A128318AD179/iTunes64Setup.exe)
+* [下载 Windows 10（32 位）版 iTunes 12.10.11] (https://secure-appldnld.apple.com/itunes12/001-97791-20210421-F0E1AA9C-A2C9-11EB-8059-A028318AD179/iTunesSetup.exe)
 
 ## 快速开始: Unix
 
@@ -76,5 +78,5 @@ $ xcode-select --install
 
 ```
 
-
+## 使用Visual Studio 2019编译
 使用 Visual Studio 2019 打开 aid2.sln 文件，平台选择x64,然后编译整个解决方案
