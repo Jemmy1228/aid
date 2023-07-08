@@ -76,19 +76,17 @@ namespace aid2{
 			};
 
 			ATHostMessage athostMessage;
-			iOSDevice(AMDeviceRef deviceHandle) {m_deviceHandle = deviceHandle;};
-			~iOSDevice() { m_deviceHandle = nullptr; };
+			iOSDevice(AMDeviceRef deviceHandle);
+			~iOSDevice();
 			AMDeviceRef DeviceRef(){ return m_deviceHandle;	};
-			string udid(){return m_udid;};
-			string FairPlayCertificate(){return m_fair_play_certificate;};
-			__int64 FairPlayDeviceType() { return m_fair_play_device_type; };
-			string DeviceName() { return m_deviceName; };
-			string ProductType() { return m_productType; };
+			string udid();
+			string FairPlayCertificate();
+			__int64 FairPlayDeviceType();
+			string DeviceName();
+			string ProductType();
 			kAMDError Connect();
 			kAMDError Disconnect();
 			ConnectMode GetInterfaceType();
-			bool GenDeviceInfo();  //生成设备基本信息
-			bool GenFairDeviceInfo();  // 读取需要授权的基本信息,需要StartSession()方法之后才可以调用
 			bool ATHostConnection();  // 成功返回true
 			void ATHostDisconnect();
 			bool OpenIOSFileSystem();
@@ -105,6 +103,7 @@ namespace aid2{
 			size_t AFCFileSize(string path);
 			// 定义执行配对时回调信息，通过参数提醒使用者按下 信任和不信任信息
 			AuthorizeDeviceCallbackFunc DoPairCallback;  
+			bool InstallApplication(const string path);
 	private:
 		const string m_afsync_rq_path = "/AirFair/sync/afsync.rq";
 		const string m_afsync_rq_sig_path = "/AirFair/sync/afsync.rq.sig";
@@ -121,11 +120,11 @@ namespace aid2{
 		string m_Version = "12.6.0.100";
 
 		// 以下是手机获取到的信息
-		string m_udid;  //存的string 
+		string m_udid = "";  //存的udid 
 		string m_fair_play_certificate;   // domain: com.apple.mobile.iTunes key: FairPlayCertificate   存的bytes
 		__int64 m_fair_play_device_type=0;   //domain: com.apple.mobile.iTunes  key: FairPlayDeviceType+KeyTypeSupportVersion
-		string m_deviceName;
-		string m_productType;
+		string m_deviceName = "";
+		string m_productType = "";
 	};
 
 }

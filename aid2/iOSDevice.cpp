@@ -2,6 +2,95 @@
 #include "Logger.h"
 
 namespace aid2{
+	iOSDevice::iOSDevice(AMDeviceRef deviceHandle)
+	{
+		m_deviceHandle = deviceHandle;
+		Connect();
+	}
+	iOSDevice::~iOSDevice()
+	{
+		Disconnect();
+		m_deviceHandle = nullptr;
+	}
+	string iOSDevice::udid()
+	{
+		if (m_udid == "")
+		{
+			CFStringRef found_device_id = AMDeviceCopyDeviceIdentifier(m_deviceHandle);
+			auto len = CFStringGetLength(found_device_id);
+			m_udid.resize(len);
+			CFStringGetCString(found_device_id, (char*)m_udid.c_str(), len + 1, kCFStringEncodingUTF8);
+			CFRelease(found_device_id);
+		}
+		return m_udid;
+	}
+	string iOSDevice::FairPlayCertificate()
+	{
+		if (m_fair_play_certificate.size() == 0) {
+			StartSession();
+			CFStringRef sDomain = CFStringCreateWithCString(NULL, "com.apple.mobile.iTunes", kCFStringEncodingUTF8);
+			CFStringRef sKey = CFStringCreateWithCString(NULL, "FairPlayCertificate", kCFStringEncodingUTF8);
+			CFStringRef sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
+			CFRelease(sKey);
+			CFIndex len = CFDataGetLength(sValue);
+			m_fair_play_certificate.resize(len);
+			CFDataGetBytes(sValue, CFRangeMake(0, len), (unsigned char*)m_fair_play_certificate.data());
+			CFRelease(sValue);
+			CFRelease(sDomain);
+			StopSession();
+		}
+		return m_fair_play_certificate;
+	}
+	__int64 iOSDevice::FairPlayDeviceType()
+	{
+		if (m_fair_play_device_type == 0)
+		{
+			StartSession();
+			CFStringRef sDomain = CFStringCreateWithCString(NULL, "com.apple.mobile.iTunes", kCFStringEncodingUTF8);
+			CFStringRef sKey = CFStringCreateWithCString(NULL, "FairPlayDeviceType", kCFStringEncodingUTF8);
+			CFStringRef sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
+			CFRelease(sKey);
+			CFNumberGetValue(sValue, kCFNumberSInt32Type, &m_fair_play_device_type);
+			CFRelease(sValue);
+			sKey = CFStringCreateWithCString(NULL, "KeyTypeSupportVersion", kCFStringEncodingUTF8);
+			sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
+			CFRelease(sKey);
+			CFNumberGetValue(sValue, kCFNumberSInt32Type, (void*)(((__int64)&m_fair_play_device_type) + 4));
+			CFRelease(sValue);
+			CFRelease(sDomain);
+			StopSession();
+		}
+		return m_fair_play_device_type;
+	}
+	string iOSDevice::DeviceName()
+	{
+		if (m_deviceName == "")
+		{
+			auto sKey = CFStringCreateWithCString(NULL, "DeviceName", kCFStringEncodingUTF8);
+			auto sValue = AMDeviceCopyValue(m_deviceHandle, NULL, sKey);
+			CFRelease(sKey);
+			if (sValue) {
+				auto len = CFStringGetLength(sValue);
+				m_deviceName.resize(len);
+				CFStringGetCString(sValue, (char*)m_deviceName.c_str(), len + 1, kCFStringEncodingUTF8);
+				CFRelease(sValue);
+			}
+		}
+		return m_deviceName;
+	}
+	string iOSDevice::ProductType()
+	{
+		auto sKey = CFStringCreateWithCString(NULL, "ProductType", kCFStringEncodingUTF8);
+		auto sValue = AMDeviceCopyValue(m_deviceHandle, NULL, sKey);
+		CFRelease(sKey);
+		if (sValue) {
+			auto len = CFStringGetLength(sValue);
+			m_productType.resize(len);
+			CFStringGetCString(sValue, (char*)m_productType.c_str(), len + 1, kCFStringEncodingUTF8);
+			CFRelease(sValue);
+		}
+		return m_productType;
+	}
 	kAMDError iOSDevice::Connect()
 	{
 		kAMDError kAMDRet = kAMDError::kAMDOk;
@@ -27,39 +116,6 @@ namespace aid2{
 		return (ConnectMode)AMDeviceGetInterfaceType(m_deviceHandle);
 	}
 
-	bool iOSDevice::GenDeviceInfo()
-	{
-		CFIndex len = 0;
-		CFStringRef sKey = CFStringCreateWithCString(NULL, "UniqueDeviceID", kCFStringEncodingUTF8);
-		CFStringRef sValue = AMDeviceCopyValue(m_deviceHandle, NULL, sKey);
-		CFRelease(sKey);
-		if (sValue) {
-			len = CFStringGetLength(sValue);
-			m_udid.resize(len);
-			CFStringGetCString(sValue, (char*)m_udid.c_str(), len + 1, kCFStringEncodingUTF8);
-			CFRelease(sValue);
-		}
-		sKey = CFStringCreateWithCString(NULL, "DeviceName", kCFStringEncodingUTF8);
-		sValue = AMDeviceCopyValue(m_deviceHandle, NULL, sKey);
-		CFRelease(sKey);
-		if (sValue) {
-			len = CFStringGetLength(sValue);
-			m_deviceName.resize(len);
-			CFStringGetCString(sValue, (char*)m_deviceName.c_str(), len + 1, kCFStringEncodingUTF8);
-			CFRelease(sValue);
-		}
-		sKey = CFStringCreateWithCString(NULL, "ProductType", kCFStringEncodingUTF8);
-		sValue = AMDeviceCopyValue(m_deviceHandle, NULL, sKey);
-		CFRelease(sKey);
-		if (sValue) {
-			len = CFStringGetLength(sValue);
-			m_productType.resize(len);
-			CFStringGetCString(sValue, (char*)m_productType.c_str(), len + 1, kCFStringEncodingUTF8);
-			CFRelease(sValue);
-		}
-		return true;
-	}
-
 	kAMDError iOSDevice::StartSession()
 	{
 		return (kAMDError)AMDeviceStartSession(m_deviceHandle);
@@ -68,32 +124,6 @@ namespace aid2{
 	kAMDError iOSDevice::StopSession()
 	{
 		return (kAMDError)AMDeviceStopSession(m_deviceHandle);
-	}
-
-	bool iOSDevice::GenFairDeviceInfo()
-	{
-		CFStringRef sDomain = CFStringCreateWithCString(NULL, "com.apple.mobile.iTunes", kCFStringEncodingUTF8);
-		CFStringRef sKey = CFStringCreateWithCString(NULL, "FairPlayCertificate", kCFStringEncodingUTF8);
-		CFStringRef sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
-		CFRelease(sKey);
-		CFIndex len = CFDataGetLength(sValue);
-		m_fair_play_certificate.resize(len);
-		CFDataGetBytes(sValue, CFRangeMake(0, len), (unsigned char *)m_fair_play_certificate.data());
-		CFRelease(sValue);
-		
-		sKey = CFStringCreateWithCString(NULL, "FairPlayDeviceType", kCFStringEncodingUTF8);
-		sValue = nullptr;
-		sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
-		CFRelease(sKey);
-		CFNumberGetValue(sValue, kCFNumberSInt32Type, &m_fair_play_device_type);
-		CFRelease(sValue);
-		sKey = CFStringCreateWithCString(NULL, "KeyTypeSupportVersion", kCFStringEncodingUTF8);
-		sValue = AMDeviceCopyValue(m_deviceHandle, sDomain, sKey);
-		CFRelease(sKey);
-		CFNumberGetValue(sValue, kCFNumberSInt32Type, (void *)(((__int64)&m_fair_play_device_type) + 4));
-		CFRelease(sValue);
-		CFRelease(sDomain);
-		return true;
 	}
 
 	bool iOSDevice::ATHostConnection()
@@ -464,16 +494,19 @@ namespace aid2{
 
 	bool iOSDevice::OpenIOSFileSystem()
 	{
+		this->StartSession();
 		void* serviceHandle;
+		bool ret = true;
 		CFStringRef sServiceName = CFStringCreateWithCString(NULL, "com.apple.afc", kCFStringEncodingUTF8);
 		if (AMDeviceStartService(m_deviceHandle, sServiceName, &serviceHandle, NULL) != 0) {
-			return false;
+			ret =  false;
 		}
 		CFRelease(sServiceName);
 		if (AFCConnectionOpen(serviceHandle, 0, &m_afc) != 0) {
-			return false;
+			ret = false;
 		}
-		return true;
+		this->StopSession();
+		return ret;
 	}
 
 	size_t iOSDevice::AFCFileSize(string path)
@@ -496,6 +529,11 @@ namespace aid2{
 		}
 		AFCKeyValueClose(fileinfo);
 		return rqSize;
+	}
+
+	bool iOSDevice::InstallApplication(const string path)
+	{
+		return false;
 	}
 
 

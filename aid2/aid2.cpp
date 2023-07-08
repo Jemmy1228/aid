@@ -24,8 +24,6 @@ void device_notification_callback(struct AMDeviceNotificationCallbackInformation
 			auto apple_device = new iOSDevice(deviceHandle);
 			if (apple_device->GetInterfaceType() == ConnectMode::USB)  //	
 			{
-				apple_device->Connect();
-				apple_device->GenDeviceInfo();
 				string udid = apple_device->udid();
 				if (udid.length() > 24) {  //只有取到udid
 					gudid[udid] = apple_device;
@@ -66,7 +64,6 @@ void device_notification_callback(struct AMDeviceNotificationCallbackInformation
 			if (udid.length() > 24) {  //只有取到udid
 				if (gudid[udid]->GetInterfaceType() == ConnectMode::USB)  //只有usb 设置才discount
 				{
-					gudid[udid]->Disconnect();
 					gmapfut[udid].wait();
 					delete gudid[udid];
 					gmapfut.erase(udid);
@@ -151,13 +148,10 @@ bool AuthorizeDevice(const char * udid) {
 			return client->RemoteGetGrappa(udid, grappa, grappa_session_id);
 		}
 	);
-	// connect
-	apple_device->StartSession();
-	apple_device->GenFairDeviceInfo();
+	// athostconnect
 	auto connRet = apple_device->ATHostConnection();
 	logger.log( "ATHostConnection(),返回值:%s,udid:%s" , connRet ? "True" : "False",udid);
 	if (!connRet) {
-		apple_device->StopSession();
 		return false;
 	}
 	//开户另外一个异步去读取，最长时间为10秒
@@ -217,7 +211,6 @@ bool AuthorizeDevice(const char * udid) {
 	}
 	apple_device->ATHostDisconnect();
 	logger.log("udid:%s,ATHostDisconnect success.", udid);
-	apple_device->StopSession();
 	return ret;
 }
 
